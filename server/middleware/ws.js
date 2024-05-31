@@ -1,27 +1,31 @@
-const WebSocket = require("ws")
-const wss = new WebSocket.WebSocketServer({port: 3000})
-wss.on("connection", (ws, rq) => {
-    ws.on("message", (message) => {
-        console.log(`Received message => ${message}`)
-        const data = JSON.parse(message)
-        //data will consist of duration and receivers
-        // const { duration, sendTo } = data
-        //get sender Id from url query called sender
-        // const sender = rq.url.split("=")[1]
-        //send message to receivers
-        // receivers.forEach((receiver) => {
-        //     wss.clients.forEach((client) => {
-        //         if (client.readyState === socket.OPEN && client.url === receiver) {
-        //             client.send(JSON.stringify({ sender, duration }))
-        //         }
-        //     })
-        // })
+import { WebSocketServer } from 'ws';
 
-        //send to all
-        wss.clients.forEach((client) => {
-            if (client.readyState === socket.OPEN) {
-                client.send("JSON.stringify({ sender, duration })")
-            }
-        })
-    })
-})
+
+export default function ws() {
+    const wss = new WebSocketServer({ port: 8080 });
+
+    wss.on('connection', function connection(ws, req) {
+
+        ws.on('message', function message(data) {
+            console.log('received: %s', data);
+            const { duration, sendTo } = JSON.parse(data);
+            const sender = req.url.split('/')[req.url.split('/').length - 1];
+            console.log("Sender: ", sender);
+            // sendTo.split(',').forEach((receiver) => {
+            //     wss.clients.forEach((client) => {
+            //         console.log("Receiver: ", receiver);
+            //     });
+            // });
+
+            wss.clients.forEach((client) => {
+                const d = {
+                    sender: sender,
+                    duration: duration
+                }
+                console.log("Sending: ", d)
+                client.send(JSON.stringify(d));
+            });
+
+        });
+    });
+}
