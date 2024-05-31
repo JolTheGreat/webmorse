@@ -89,7 +89,7 @@ export default defineComponent({
 
 <template>
   <h1>モールス信号通信機</h1>
-  <h2>Id: {{this.id}}</h2>
+  <h2>Id: {{id}}</h2>
   <div id="settings">
     <input type="text" placeholder="発信チャンネル(コンマで複数可)" v-model="sendTo">
     <input type="text" placeholder="受信チャンネル" v-model="receiveFrom">
