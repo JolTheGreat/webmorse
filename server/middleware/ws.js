@@ -3,7 +3,8 @@ import { WebSocketServer } from 'ws';
 
 export default eventHandler((event) => {
     console.log("Starting backend")
-    const wss = new WebSocketServer({ port : 8080});
+    const port = process.env.PORT || 3000;
+    const wss = new WebSocketServer({ port : port});
     wss.on('connection', function connection(ws, req) {
 
         ws.on('message', function message(data) {
