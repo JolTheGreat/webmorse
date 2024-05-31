@@ -1,12 +1,18 @@
 import { WebSocketServer } from 'ws';
 
-
 export default eventHandler((event) => {
     console.log("Starting backend")
     const port = process.env.PORT || 3000;
-    const wss = new WebSocketServer({ port : port});
-    wss.on('connection', function connection(ws, req) {
 
+    let wss;
+
+    try {
+        wss = new WebSocketServer({ port : port});
+    } catch (e) {
+        console.log("Error: ", e);
+    }
+    wss.on('connection', function connection(ws, req) {
+        console.log("Connection established")
         ws.on('message', function message(data) {
             console.log('received: %s', data);
             const { duration, sendTo } = JSON.parse(data);
