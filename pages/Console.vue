@@ -14,7 +14,7 @@ export default defineComponent({
   },
   mounted() {
     const id = Math.random().toString(36).slice(-7);
-    this.socket = new WebSocket("ws://webmorse-6d47f4272e41.herokuapp.com/" + id);
+    this.socket = new WebSocket("wss://webmorse-6d47f4272e41.herokuapp.com/" + id);
     this.id = id;
     this.socket.onopen = () => {
       console.log("Connected to server");
