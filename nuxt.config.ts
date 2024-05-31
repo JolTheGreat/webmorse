@@ -11,9 +11,10 @@ export default defineNuxtConfig({
       })
     }
   },
-  serverMiddleware: [
-    '~/server/middleware/websocket.js',
-  ],
+  // serverMiddleware: [
+  //   '~/server/middleware/websocket.js',
+  // ],
+
 
 
 })
