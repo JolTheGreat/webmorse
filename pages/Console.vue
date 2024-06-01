@@ -21,7 +21,6 @@ export default defineComponent({
     }
 
     this.socket.onmessage = (event) => {
-      console.log(this.id + " received message")
       const data = JSON.parse(event.data);
       let audioContext = new (window.AudioContext || window.webkitAudioContext)();
       let oscillator = audioContext.createOscillator();
@@ -63,7 +62,6 @@ export default defineComponent({
       window.addEventListener("keydown", (e) => {
         if (e.key === " " && !this.isPlaying) {
           startTime = new Date().getTime();
-          console.log("down");
           gainNode.gain.setValueAtTime(0.5, audioContext.currentTime); // Set gain to play sound
           this.isPlaying = true;
 
@@ -72,7 +70,6 @@ export default defineComponent({
 
       window.addEventListener("keyup", (e) => {
         if (e.key === " " && this.isPlaying) {
-          console.log("up");
           gainNode.gain.setValueAtTime(0, audioContext.currentTime); // Set gain to 0 to stop sound
           this.isPlaying = false;
           const data = {
