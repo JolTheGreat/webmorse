@@ -93,10 +93,17 @@ export default defineComponent({
     <button @click="settings" @keydown.prevent>設定する</button>
   </div>
 
+  <img src="../assets/OIPen.jpeg" alt="morse-code">
+  <img src="../assets/OIPjp.jpeg" alt="morse-code">
+
+
 
 
 </template>
 
 <style scoped>
+img {
+  margin: 2rem 0;
+}
 
 </style>
