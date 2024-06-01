@@ -93,6 +93,7 @@ export default defineComponent({
     <button @click="settings" @keydown.prevent>設定する</button>
   </div>
 
+  <p>設定をしてからスペースキーで発信</p>
   <img src="../assets/OIPen.jpeg" alt="morse-code">
   <img src="../assets/OIPjp.jpeg" alt="morse-code">
 
