@@ -34,10 +34,30 @@ export default defineComponent({
       gainNode.connect(audioContext.destination);
 
       if (data.sender === this.receiveFrom) {
-        oscillator.start();
-        setTimeout(() => {
-          oscillator.stop();
-        }, data.duration);
+        //if oscillator is already playing, wait for it to stop. When finished, play instantly
+
+        if (this.isPlaying) {
+          //recheck every 25 ms
+          const interval = setInterval(() => {
+            if (!this.isPlaying) {
+              oscillator.start();
+              this.isPlaying = true;
+              setTimeout(() => {
+                oscillator.stop();
+                this.isPlaying = false;
+              }, data.duration);
+              clearInterval(interval);
+            }
+          }, 50);
+        } else {
+          oscillator.start();
+          this.isPlaying = true;
+          setTimeout(() => {
+            oscillator.stop();
+            this.isPlaying = false;
+          }, data.duration);
+        }
+
       }
     }
   },
@@ -79,30 +99,57 @@ export default defineComponent({
           this.socket.send(JSON.stringify(data));
         }
       });
+    },
+    transmitStart() {
+      const event = new KeyboardEvent("keydown", {
+        key: " "
+      });
+      window.dispatchEvent(event);
+      console.log("Transmitting")
+    },
+
+    transmitEnd() {
+      const event = new KeyboardEvent("keyup", {
+        key: " "
+      });
+      window.dispatchEvent(event);
+      console.log("Stopped transmitting")
     }
   }
 })
 </script>
 
 <template>
-  <h1>モールス信号通信機</h1>
-  <h2>Id: {{id}}</h2>
-  <div id="settings">
-    <input type="text" placeholder="発信チャンネル(コンマで複数可)" v-model="sendTo">
-    <input type="text" placeholder="受信チャンネル" v-model="receiveFrom">
-    <button @click="settings" @keydown.prevent>設定する</button>
+  <div id="app">
+    <h1>モールス信号通信機</h1>
+    <h2>Id: {{ id }}</h2>
+    <div id="settings">
+      <input type="text" placeholder="発信チャンネル(コンマで複数可)" v-model="sendTo">
+      <input type="text" placeholder="受信チャンネル" v-model="receiveFrom">
+      <button @click="settings" @keydown.prevent>設定する</button>
+    </div>
+
+    <p>設定をしてからスペースキーまたはボタンで発信</p>
+    <button @mousedown="transmitStart" @mouseup="transmitEnd" id="transmit">発信</button>
+    <div>
+      <img src="../assets/OIPen.jpeg" alt="morse-code">
+      <img src="../assets/OIPjp.jpeg" alt="morse-code">
+    </div>
   </div>
-
-  <p>設定をしてからスペースキーで発信</p>
-  <img src="../assets/OIPen.jpeg" alt="morse-code">
-  <img src="../assets/OIPjp.jpeg" alt="morse-code">
-
-
-
-
 </template>
 
 <style scoped>
+#app {
+  padding: 2rem;
+}
+
+#transmit {
+  margin: 2rem 0;
+  width: 20%;
+  height: 20%;
+  padding: 1rem;
+}
+
 img {
   margin: 2rem 0;
 }
