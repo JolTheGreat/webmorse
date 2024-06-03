@@ -148,6 +148,11 @@ export default defineComponent({
   width: 20%;
   height: 20%;
   padding: 1rem;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 img {
