@@ -13,6 +13,10 @@ export default defineComponent({
     }
   },
   mounted() {
+    const transmit = document.getElementById("transmit");
+    transmit.addEventListener("touchstart", this.transmitStart);
+    transmit.addEventListener("touchend", this.transmitEnd);
+
     const id = Math.random().toString(36).slice(-7);
     this.socket = new WebSocket("wss://webmorse-6d47f4272e41.herokuapp.com/" + id);
     this.id = id;
@@ -63,8 +67,6 @@ export default defineComponent({
   },
   methods: {
     settings() {
-      console.log("Settings")
-
       let audioContext = new (window.AudioContext || window.webkitAudioContext)();
       let oscillator = audioContext.createOscillator();
       let gainNode = audioContext.createGain();
@@ -105,7 +107,6 @@ export default defineComponent({
         key: " "
       });
       window.dispatchEvent(event);
-      console.log("Transmitting")
     },
 
     transmitEnd() {
@@ -113,7 +114,6 @@ export default defineComponent({
         key: " "
       });
       window.dispatchEvent(event);
-      console.log("Stopped transmitting")
     }
   }
 })
@@ -130,7 +130,7 @@ export default defineComponent({
     </div>
 
     <p>設定をしてからスペースキーまたはボタンで発信</p>
-    <button @mousedown="transmitStart" @mouseup="transmitEnd" id="transmit">発信</button>
+    <button @mousedown="transmitStart"  @mouseup="transmitEnd" id="transmit">発信</button>
     <div>
       <img src="../assets/OIPen.jpeg" alt="morse-code">
       <img src="../assets/OIPjp.jpeg" alt="morse-code">
