@@ -52,7 +52,7 @@ export default defineComponent({
               }, data.duration);
               clearInterval(interval);
             }
-          }, 50);
+          }, 100);
         } else {
           oscillator.start();
           this.isPlaying = true;
